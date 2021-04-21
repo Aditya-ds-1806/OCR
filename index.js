@@ -1,9 +1,10 @@
 const { createWorker } = Tesseract;
 const image = document.querySelector('#image');
 
-const worker = createWorker({
-    logger: m => console.log(m)
-});
+window.onload = async () => {
+    const text = await recognize(image);
+    displayRecognizedText(text);
+}
 
 document.querySelector('#file').addEventListener('change', function (e) {
     const reader = new FileReader();
@@ -14,11 +15,23 @@ document.querySelector('#file').addEventListener('change', function (e) {
     img.onload = async () => {
         this.value = '';
         image.src = img.src;
-        await worker.load();
-        await worker.loadLanguage('eng');
-        await worker.initialize('eng');
-        const { data: { text } } = await worker.recognize(img);
-        await worker.terminate()
-        document.querySelector('#output').value = text;
+        const text = await recognize(img);
+        displayRecognizedText(text);
     }
 });
+
+async function recognize(img) {
+    const worker = createWorker({
+        logger: m => console.log(m)
+    });
+    await worker.load();
+    await worker.loadLanguage('eng');
+    await worker.initialize('eng');
+    const { data: { text } } = await worker.recognize(img);
+    await worker.terminate();
+    return text;
+}
+
+function displayRecognizedText(text) {
+    document.querySelector('#output').value = text;
+}
