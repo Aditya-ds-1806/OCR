@@ -1,5 +1,7 @@
 const { createWorker } = Tesseract;
 const image = document.querySelector('#image');
+const statusSpan = document.querySelector('#status');
+const progressBar = document.querySelector('.progress-bar');
 
 window.onload = async () => {
     const text = await recognize(image);
@@ -22,7 +24,7 @@ document.querySelector('#file').addEventListener('change', function (e) {
 
 async function recognize(img) {
     const worker = createWorker({
-        logger: m => console.log(m)
+        logger: m => updateProgress(m)
     });
     await worker.load();
     await worker.loadLanguage('eng');
@@ -34,4 +36,14 @@ async function recognize(img) {
 
 function displayRecognizedText(text) {
     document.querySelector('#output').value = text;
+}
+
+function updateProgress({ progress, status }) {
+    if (progress === 1) {
+        statusSpan.textContent = 'Done!';
+        progressBar.style.width = `0%`;
+        return;
+    }
+    statusSpan.textContent = status;
+    progressBar.style.width = `${progress * 100}%`;
 }
