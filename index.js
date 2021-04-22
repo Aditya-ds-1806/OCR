@@ -39,11 +39,9 @@ function displayRecognizedText(text) {
 }
 
 function updateProgress({ progress, status }) {
-    if (progress === 1) {
-        statusSpan.textContent = 'Done!';
-        progressBar.style.width = `0%`;
-        return;
-    }
     statusSpan.textContent = status;
     progressBar.style.width = `${progress * 100}%`;
+    if (status === 'recognizing text' && progress === 1) {
+        statusSpan.textContent = 'Done!';
+    }
 }
