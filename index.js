@@ -8,20 +8,32 @@ document.querySelector('#file').addEventListener('change', function (e) {
     const reader = new FileReader();
     const file = this.files[0];
     const img = new Image();
-    disable(btn);
+    disable('button');
     reader.readAsDataURL(file);
     reader.onload = () => img.src = reader.result;
     img.onload = async () => {
         image.src = img.src;
-        enable(btn);
+        enable('button');
+    }
+});
+
+document.querySelector('#url').addEventListener('change', function (e) {
+    disable('button');
+    const url = this.value;
+    const img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.src = url;
+    img.onload = async () => {
+        image.src = img.src;
+        enable('button');
     }
 });
 
 btn.addEventListener('click', async () => {
-    disable('button', '#file');
+    disable('button', '#file', '#url');
     const text = await recognize(image);
     displayRecognizedText(text);
-    enable('button', '#file');
+    enable('button', '#file', '#url');
 });
 
 async function recognize(img) {
