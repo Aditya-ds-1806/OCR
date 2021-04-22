@@ -8,20 +8,20 @@ document.querySelector('#file').addEventListener('change', function (e) {
     const reader = new FileReader();
     const file = this.files[0];
     const img = new Image();
-    btn.disabled = true;
+    disable(btn);
     reader.readAsDataURL(file);
     reader.onload = () => img.src = reader.result;
     img.onload = async () => {
         image.src = img.src;
-        btn.disabled = false;
+        enable(btn);
     }
 });
 
 btn.addEventListener('click', async () => {
-    btn.disabled = true;
+    disable('button', '#file');
     const text = await recognize(image);
     displayRecognizedText(text);
-    btn.disabled = false;
+    enable('button', '#file');
 });
 
 async function recognize(img) {
@@ -46,4 +46,16 @@ function updateProgress({ progress, status }) {
     if (status === 'recognizing text' && progress === 1) {
         statusSpan.textContent = 'Done!';
     }
+}
+
+function disable(...elements) {
+    elements.forEach((el) => {
+        document.querySelector(el).disabled = true;
+    });
+}
+
+function enable(...elements) {
+    elements.forEach((el) => {
+        document.querySelector(el).disabled = false;
+    });
 }
