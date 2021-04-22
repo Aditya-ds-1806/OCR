@@ -3,6 +3,7 @@ const image = document.querySelector('#image');
 const statusSpan = document.querySelector('#status');
 const progressBar = document.querySelector('.progress-bar');
 const btn = document.querySelector('button');
+const corsProxy = 'https://cors.bridged.cc/';
 
 document.querySelector('#file').addEventListener('change', function (e) {
     const reader = new FileReader();
@@ -19,7 +20,7 @@ document.querySelector('#file').addEventListener('change', function (e) {
 
 document.querySelector('#url').addEventListener('change', function (e) {
     disable('button');
-    const url = this.value;
+    const url = corsProxy + this.value;
     const img = new Image();
     img.crossOrigin = 'Anonymous';
     img.src = url;
