@@ -18,15 +18,16 @@ document.querySelector('#file').addEventListener('change', function (e) {
 });
 
 btn.addEventListener('click', async () => {
+    btn.disabled = true;
     const text = await recognize(image);
     displayRecognizedText(text);
+    btn.disabled = false;
 });
 
 async function recognize(img) {
     const worker = createWorker({
         logger: m => updateProgress(m)
     });
-    btn.disabled = true;
     await worker.load();
     await worker.loadLanguage('eng');
     await worker.initialize('eng');
@@ -37,7 +38,6 @@ async function recognize(img) {
 
 function displayRecognizedText(text) {
     document.querySelector('#output').value = text;
-    btn.disabled = false;
 }
 
 function updateProgress({ progress, status }) {
