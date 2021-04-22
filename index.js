@@ -2,30 +2,31 @@ const { createWorker } = Tesseract;
 const image = document.querySelector('#image');
 const statusSpan = document.querySelector('#status');
 const progressBar = document.querySelector('.progress-bar');
-
-window.onload = async () => {
-    const text = await recognize(image);
-    displayRecognizedText(text);
-}
+const btn = document.querySelector('button');
 
 document.querySelector('#file').addEventListener('change', function (e) {
     const reader = new FileReader();
     const file = this.files[0];
     const img = new Image();
+    btn.disabled = true;
     reader.readAsDataURL(file);
     reader.onload = () => img.src = reader.result;
     img.onload = async () => {
-        this.value = '';
         image.src = img.src;
-        const text = await recognize(img);
-        displayRecognizedText(text);
+        btn.disabled = false;
     }
+});
+
+btn.addEventListener('click', async () => {
+    const text = await recognize(image);
+    displayRecognizedText(text);
 });
 
 async function recognize(img) {
     const worker = createWorker({
         logger: m => updateProgress(m)
     });
+    btn.disabled = true;
     await worker.load();
     await worker.loadLanguage('eng');
     await worker.initialize('eng');
@@ -36,6 +37,7 @@ async function recognize(img) {
 
 function displayRecognizedText(text) {
     document.querySelector('#output').value = text;
+    btn.disabled = false;
 }
 
 function updateProgress({ progress, status }) {
