@@ -32,18 +32,19 @@ document.querySelector('#url').addEventListener('change', function (e) {
 
 btn.addEventListener('click', async () => {
     disable('button', '#file', '#url');
-    const text = await recognize(image);
+    const langCode = document.querySelector('select').value;    
+    const text = await recognize(image, langCode);
     displayRecognizedText(text);
     enable('button', '#file', '#url');
 });
 
-async function recognize(img) {
+async function recognize(img, code) {
     const worker = createWorker({
         logger: m => updateProgress(m)
     });
     await worker.load();
-    await worker.loadLanguage('eng');
-    await worker.initialize('eng');
+    await worker.loadLanguage(code);
+    await worker.initialize(code);
     const { data: { text } } = await worker.recognize(img);
     await worker.terminate();
     return text;
