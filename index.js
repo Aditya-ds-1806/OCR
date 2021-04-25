@@ -53,6 +53,7 @@ recognizeBtn.addEventListener('click', async () => {
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     document.querySelector('span.spinner-grow').classList.remove('d-none');
+    disable('form button');
     const formdata = new FormData();
     formdata.append('img', document.querySelector('#img').files[0]);
     formdata.append('alignment', Number(document.querySelector('#alignment').checked));
@@ -67,6 +68,8 @@ form.addEventListener('submit', async (e) => {
     const { text } = await res.json();
     displayRecognizedText(text);
     document.querySelector('span.spinner-grow').classList.add('d-none');
+    enable('form button');
+
 });
 
 async function recognize(img, code) {
