@@ -52,7 +52,7 @@ form.addEventListener('submit', async (e) => {
     const formdata = new FormData();
     formdata.append('img', document.querySelector('#img').files[0]);
     formdata.append('alignment', Number(document.querySelector('#alignment').checked));
-    const res = await fetch('http://tesseract-ocr-backend.herokuapp.com/', {
+    const res = await fetch('https://tesseract-ocr-backend.herokuapp.com/', {
         method: 'POST',
         body: formdata,
         mode: 'cors'
