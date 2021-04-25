@@ -2,40 +2,64 @@ const { createWorker } = Tesseract;
 const image = document.querySelector('#image');
 const statusSpan = document.querySelector('#status');
 const progressBar = document.querySelector('.progress-bar');
-const btn = document.querySelector('button');
+const recognizeBtn = document.querySelector('#recognize');
+const jsBtn = document.querySelector('#javascript-pill');
+const pyBtn = document.querySelector('#python-pill');
 const corsProxy = 'https://cors.bridged.cc/';
+const form = document.querySelector('form');
 
-document.querySelector('#file').addEventListener('change', function (e) {
-    const reader = new FileReader();
-    const file = this.files[0];
-    const img = new Image();
-    disable('button');
-    reader.readAsDataURL(file);
-    reader.onload = () => img.src = reader.result;
-    img.onload = async () => {
-        image.src = img.src;
-        enable('button');
-    }
+jsBtn.addEventListener('click', () => toggleTabs(jsBtn, pyBtn));
+pyBtn.addEventListener('click', () => toggleTabs(pyBtn, jsBtn));
+
+document.querySelectorAll('input[type=file]').forEach((input) => {
+    input.addEventListener('change', function (e) {
+        const reader = new FileReader();
+        const file = this.files[0];
+        const img = new Image();
+        disable('#recognize');
+        reader.readAsDataURL(file);
+        reader.onload = () => img.src = reader.result;
+        img.onload = async () => {
+            image.src = img.src;
+            enable('#recognize');
+        }
+    });
 });
 
 document.querySelector('#url').addEventListener('change', function (e) {
-    disable('button');
+    disable('#recognize');
     const url = corsProxy + this.value;
     const img = new Image();
     img.crossOrigin = 'Anonymous';
     img.src = url;
     img.onload = async () => {
         image.src = img.src;
-        enable('button');
+        enable('#recognize');
     }
 });
 
-btn.addEventListener('click', async () => {
-    disable('button', '#file', '#url');
-    const langCode = document.querySelector('select').value;    
+recognizeBtn.addEventListener('click', async () => {
+    disable('#recognize', '#file', '#url');
+    const langCode = document.querySelector('select').value;
     const text = await recognize(image, langCode);
     displayRecognizedText(text);
-    enable('button', '#file', '#url');
+    enable('#recognize', '#file', '#url');
+});
+
+form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    document.querySelector('span.spinner-grow').classList.remove('d-none');
+    const formdata = new FormData();
+    formdata.append('img', document.querySelector('#img').files[0]);
+    formdata.append('alignment', Number(document.querySelector('#alignment').checked));
+    const res = await fetch('http://tesseract-ocr-backend.herokuapp.com/', {
+        method: 'POST',
+        body: formdata,
+        mode: 'cors'
+    })
+    const { text } = await res.json();
+    displayRecognizedText(text);
+    document.querySelector('span.spinner-grow').classList.add('d-none');
 });
 
 async function recognize(img, code) {
@@ -72,4 +96,14 @@ function enable(...elements) {
     elements.forEach((el) => {
         document.querySelector(el).disabled = false;
     });
+}
+
+
+function toggleTabs(onTabBtn, offTabBtn) {
+    const onTabID = onTabBtn.dataset.target;
+    const offTabID = offTabBtn.dataset.target;
+    onTabBtn.classList.add('active');
+    offTabBtn.classList.remove('active');
+    document.querySelector(onTabID).classList.add('show', 'active');
+    document.querySelector(offTabID).classList.remove('show', 'active');
 }
