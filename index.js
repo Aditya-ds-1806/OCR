@@ -55,7 +55,7 @@ form.addEventListener('submit', async (e) => {
     formdata.append('gaussian', Number(document.querySelector('#gaussian').checked));
     formdata.append('ed', Number(document.querySelector('#ed').checked));
     formdata.append('median', Number(document.querySelector('#median').checked));
-    const res = await fetch('http://localhost:5000', {
+    const res = await fetch('https://tesseract-ocr-backend.herokuapp.com/', {
         method: 'POST',
         body: formdata,
         mode: 'cors'
