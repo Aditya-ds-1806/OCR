@@ -8,6 +8,10 @@ const pyBtn = document.querySelector('#python-pill');
 const corsProxy = 'https://cors.bridged.cc/';
 const form = document.querySelector('form');
 
+particlesJS.load('particles-js', '/particles.json', function () {
+    console.log('callback - particles.js config loaded');
+});
+
 jsBtn.addEventListener('click', () => toggleTabs(jsBtn, pyBtn));
 pyBtn.addEventListener('click', () => toggleTabs(pyBtn, jsBtn));
 
