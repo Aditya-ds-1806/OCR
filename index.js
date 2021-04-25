@@ -52,7 +52,10 @@ form.addEventListener('submit', async (e) => {
     const formdata = new FormData();
     formdata.append('img', document.querySelector('#img').files[0]);
     formdata.append('alignment', Number(document.querySelector('#alignment').checked));
-    const res = await fetch('https://tesseract-ocr-backend.herokuapp.com/', {
+    formdata.append('gaussian', Number(document.querySelector('#gaussian').checked));
+    formdata.append('ed', Number(document.querySelector('#ed').checked));
+    formdata.append('median', Number(document.querySelector('#median').checked));
+    const res = await fetch('http://localhost:5000', {
         method: 'POST',
         body: formdata,
         mode: 'cors'

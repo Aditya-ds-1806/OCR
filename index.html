@@ -162,13 +162,26 @@
                                 <option value="en" selected>English</option>
                             </select>
                             <div class="form-check form-switch mb-3">
-                                <label class="form-check-label" for="alignment">Perform document
-                                    alignment?</label>
+                                <label class="form-check-label" for="alignment">Document
+                                    alignment</label>
                                 <input class="form-check-input" type="checkbox" id="alignment">
+                            </div>
+                            <div class="form-check form-switch mb-3">
+                                <label class="form-check-label" for="gaussian">Gaussian blur</label>
+                                <input class="form-check-input" type="checkbox" id="gaussian">
+                            </div>
+                            <div class="form-check form-switch mb-3">
+                                <label class="form-check-label" for="ed">Erosion & Dilation</label>
+                                <input class="form-check-input" type="checkbox" id="ed">
+                            </div>
+                            <div class="form-check form-switch mb-3">
+                                <label class="form-check-label" for="median">Median filter</label>
+                                <input class="form-check-input" type="checkbox" id="median">
                             </div>
                             <button class="btn btn-primary" type="submit">
                                 Recognize
-                                <span class="spinner-grow spinner-grow-sm d-none" role="status" aria-hidden="true"></span>
+                                <span class="spinner-grow spinner-grow-sm d-none" role="status"
+                                    aria-hidden="true"></span>
                             </button>
                         </form>
                     </div>
