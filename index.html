@@ -13,7 +13,7 @@
 
 <body>
     <div id="particles-js"></div>
-    <div class="container">
+    <div class="container pb-5">
         <header class="py-5">
             <h1 class="text-center">Tesseract OCR demo</h1>
         </header>
@@ -147,6 +147,13 @@
                         </select>
                         <div>
                             <button class="btn btn-primary" id="recognize">Recognize</button>
+                            <div class="mt-4 pt-2">
+                                <span id="status" class="text-capitalize"></span>
+                                <div class="progress my-2">
+                                    <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%">
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="tab-pane fade" id="python" role="tabpanel">
@@ -183,18 +190,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 mt-5 mt-md-0">
                 <div class="form-floating h-100">
                     <textarea class="form-control h-100 border-2" placeholder="Leave a comment here" id="output"
                         style="resize: none;" readonly></textarea>
                     <label for="output">Recognized text</label>
                 </div>
-            </div>
-        </div>
-        <div class="my-5 pb-5">
-            <span id="status" class="text-capitalize"></span>
-            <div class="progress my-2">
-                <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 0%"></div>
             </div>
         </div>
     </div>
